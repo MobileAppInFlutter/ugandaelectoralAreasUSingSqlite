@@ -9,10 +9,22 @@ import 'package:working_with_sqlt/model/district.model.dart';
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.internal();
   factory DatabaseHelper() => _instance;
+  // candidate table
+  final String candidateTable = 'Candidate';
+  final String surnameColumn = 'surname';
+  final String otherNameColumn = 'other_name';
+  final String genderColumn = 'sex';
+  final String politicalPartyColumn = 'political_party';
+  final String symbolColumn = 'symbol';
+  final String categoryNameColumn = 'category_name';
+  final String districtNameColumn = 'district_name';
+  final String electoralAreaColumn = 'electoral_area';
+  final String statusColumn = 'status';
 
-  final String tableName = "District";
+  // District table
+  final String districtTable = "District";
   final String columnId = "id";
-  final String columnDistrict = 'district'; 
+  final String columnDistrict = 'district';
   final String columnconstituency = "constituency";
   final String columnSubCountry = "subcounty";
   final String columnElectoralAreaVillage = "electoral_area_village";
@@ -35,7 +47,7 @@ class DatabaseHelper {
       var path = join(databasesPath, "kampeniData.db");
 
 // Delete the database
-      await deleteDatabase(path);
+      // await deleteDatabase(path);
 
 // Check if the db exists
       var exists = await databaseExists(path);
@@ -66,18 +78,23 @@ class DatabaseHelper {
     }
   }
 
-  void _onCreate(Database db, int version) async {
-    await db.execute(
-        "CREATE TABLE $tableName(id INTEGER PRIMARY KEY, $columnDistrict TEXT, $columnconstituency TEXT, $columnSubCountry TEXT, $columnElectoralAreaVillage TEXT)");
-    print("Table is created");
-  }
+  // void _onCreate(Database db, int version) async {
+  //   await db.execute(
+  //       "CREATE TABLE $districtTable(id INTEGER PRIMARY KEY, $columnDistrict TEXT, $columnconstituency TEXT, $columnSubCountry TEXT, $columnElectoralAreaVillage TEXT)");
+  //   print("Table is created");
+  // }
 
+  // HANDLE CANDIDATE TABLE QUERIES
+
+  //end of Candidate queries
+
+  // HANDLE DISTRICT TABLE QUERIES
   //Get
   Future<List> getItems() async {
     try {
       var dbClient = await db;
       var result = await dbClient.rawQuery(
-          "SELECT * FROM $tableName ORDER BY $columnDistrict ASC"); //ASC
+          "SELECT * FROM $districtTable ORDER BY $columnDistrict ASC");
 
       return result.toList();
     } catch (e) {
@@ -90,21 +107,23 @@ class DatabaseHelper {
     try {
       var dbClient = await db;
       var result = await dbClient.rawQuery(
-          "SELECT * FROM $tableName WHERE field4 = '$electoralVillage' GROUP BY $columnconstituency, $columnSubCountry"); //ASC
+          "SELECT * FROM $districtTable WHERE $columnElectoralAreaVillage = '$electoralVillage' GROUP BY $columnconstituency, $columnSubCountry");
       var resultList = result.toList();
-
       return resultList.map((map) => DistrictItem.fromMap(map)).toList();
     } catch (e) {
       print(e.toString());
     }
   }
+  //end of district queries
+
+  // ACCROSS TABLES
 
   // Return candidates for a given district
-  Future getCandidateForGivenDistrict(String districtName) async {
+  Future getCandidateForGivenArea(String electoralVillageName) async {
     try {
       var dbClient = await db;
       var sql =
-          "select * from candidates_position c  inner join kampenidb k on c.field7 = k.field1 where k.field1='$districtName'";
+          "SELECT d.district,d.constituency,d.subcounty,d.electoral_area_village, c.surname, c.other_name, c.sex, c.political_party, c.symbol, c.category_name,c.electoral_area, c.district_name  FROM Candidate c INNER JOIN district d ON d.district = c.district_name WHERE d.electoral_area_village = '$electoralVillageName'  ORDER BY c.surname";
       var result = await dbClient.rawQuery(sql);
       var resultList = result.toList();
       return resultList.map((map) => Candidate.fromMap(map)).toList();

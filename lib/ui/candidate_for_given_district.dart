@@ -16,7 +16,7 @@ class _CandidateForAgivenDistrictState
   List<Candidate> _searchResult = [];
   void _search() async {
     print('${_searchController.text}');
-    var result = await databaseHelper.getCandidateForGivenDistrict(
+    var result = await databaseHelper.getCandidateForGivenArea(
         _searchController.text.toUpperCase().trim());
     setState(() {
       _searchResult = [];
@@ -37,7 +37,7 @@ class _CandidateForAgivenDistrictState
               child: TextFormField(
                 controller: _searchController,
                 decoration: InputDecoration(
-                    labelText: 'Enter district',
+                    labelText: 'Enter your village',
                     suffix: InkWell(
                       child: Text('Search'),
                       onTap: _search,
@@ -59,9 +59,9 @@ class _CandidateForAgivenDistrictState
                                   children: [
                                     Row(
                                       children: [
-                                        Text('${++index} District Name:'),
+                                        Text('$index District Name:'),
                                         Text(
-                                            '${_searchResult[--index].districtName}'),
+                                            '${_searchResult[index].districtName}'),
                                       ],
                                     ),
                                     Row(
@@ -79,13 +79,51 @@ class _CandidateForAgivenDistrictState
                                     ),
                                     Row(
                                       children: [
+                                        Text('Gender:'),
+                                        Expanded(
+                                          child: Text(
+                                              '${_searchResult[index].sex}'),
+                                        ),
+                                      ],
+                                    ),
+                                     Row(
+                                      children: [
+                                        Text('Symbol:'),
+                                        Expanded(
+                                          child: Text(
+                                              '${_searchResult[index].symbol}'),
+                                        ),
+                                      ],
+                                    ),
+                                     Row(
+                                      children: [
+                                        Text('Position:'),
+                                        Expanded(
+                                          child: Text(
+                                              '${_searchResult[index].categoryName}'),
+                                        ),
+
+                                      ],
+                                    ),
+                                     Row(
+                                      children: [
                                         Text('Political Party:'),
                                         Expanded(
                                           child: Text(
                                               '${_searchResult[index].politicalParty}'),
                                         ),
                                       ],
-                                    )
+                                    ),
+                                     Row(
+                                      children: [
+                                        Text('Electoral Area:'),
+                                        Expanded(
+                                          child: Text(
+                                              '${_searchResult[index].electoralAreaName}'),
+                                        ),
+                                      ],
+                                    ),
+                                   
                                   ],
                                 ),
                               ),
