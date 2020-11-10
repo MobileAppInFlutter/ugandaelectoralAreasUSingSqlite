@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:working_with_sqlt/model/district.model.dart';
+import 'package:working_with_sqlt/ui/candidate_for_given_district.dart';
 import 'package:working_with_sqlt/ui/search_screen.dart';
 import 'package:working_with_sqlt/util/database_client.dart';
 
@@ -52,7 +53,7 @@ class _DbDataState extends State<DbData> {
                             Text('Sub County Name:'),Text('${_districtItemList[index].subCountry}'),
                           ],),
                           Row(children: [
-                            Text('Electoral Village Name:'),Text('${_districtItemList[index].electoralVillageArea}'),
+                            Text('Electoral Village Name:'),Expanded(child: Text('${_districtItemList[index].electoralVillageArea}')),
                           ],)
                         ],
                       ),
@@ -83,14 +84,14 @@ class _DbDataState extends State<DbData> {
         child: new Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-           
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {},
-              color: Colors.white,
-            ),
-          ],
+          children: <Widget>[    
+           Padding(
+             padding: const EdgeInsets.all(12.0),
+             child: InkWell(child: Text('Candidates'), onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (_) => CandidateForAgivenDistrict()))
+             
+          ,
+           ))
+           ],
         ),
       ),
     );

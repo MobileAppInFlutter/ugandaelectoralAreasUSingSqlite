@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'package:path/path.dart';
+import 'package:working_with_sqlt/model/candidate.model.dart';
 import 'package:working_with_sqlt/model/district.model.dart';
 
 class DatabaseHelper {
@@ -98,6 +99,19 @@ class DatabaseHelper {
     }
   }
 
+  // Return candidates for a given district
+  Future getCandidateForGivenDistrict(String districtName) async {
+    try {
+      var dbClient = await db;
+      var sql =
+          "select * from candidates_position c  inner join kampenidb k on c.field7 = k.field1 where k.field1='$districtName'";
+      var result = await dbClient.rawQuery(sql);
+      var resultList = result.toList();
+      return resultList.map((map) => Candidate.fromMap(map)).toList();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   Future close() async {
     var dbClient = await db;

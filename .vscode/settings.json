@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:working_with_sqlt}/assets/kampeni.db",
+            "name": "michael"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
