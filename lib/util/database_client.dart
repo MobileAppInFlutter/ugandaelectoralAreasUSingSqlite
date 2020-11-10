@@ -10,12 +10,12 @@ class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.internal();
   factory DatabaseHelper() => _instance;
 
-  final String tableName = "kampenidb";
+  final String tableName = "District";
   final String columnId = "id";
-  final String columnDistrict = 'field1'; //"DISTRICT";
-  final String columnconstituency = "field2";
-  final String columnSubCountry = "field3";
-  final String columnElectoralAreaVillage = "field4";
+  final String columnDistrict = 'district'; 
+  final String columnconstituency = "constituency";
+  final String columnSubCountry = "subcounty";
+  final String columnElectoralAreaVillage = "electoral_area_village";
 
   static Database _db;
 
@@ -35,7 +35,7 @@ class DatabaseHelper {
       var path = join(databasesPath, "kampeniData.db");
 
 // Delete the database
-      // await deleteDatabase(path);
+      await deleteDatabase(path);
 
 // Check if the db exists
       var exists = await databaseExists(path);

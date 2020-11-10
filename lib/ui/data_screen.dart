@@ -104,7 +104,7 @@ class _DbDataState extends State<DbData> {
     districtItems.forEach((item) {
       DistrictItem districtItem = DistrictItem.fromMap(item);
       setState(() {
-        _districtItemList.add(DistrictItem.map(item));
+        _districtItemList.add(districtItem);
       });
       // print("Db items: ${districtItem.districtName}");
     });
